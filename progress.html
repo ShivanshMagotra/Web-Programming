@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Daily Progress</title>
+  <link rel="stylesheet" href="progress.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="progress.html">Progress</a>
+  <a href="dashboard.html">Dashboard</a>
+</nav>
+
+<h1>Update Progress</h1>
+
+<div class="container">
+  <p class="info">Enter how many hours you studied today for each subject</p>
+  <div id="inputs"></div>
+  <button onclick="saveProgress()">Save Progress</button>
+</div>
+
+<script>
+function getSubjects(){ return JSON.parse(localStorage.getItem("subjects")) || []; }
+function setSubjects(data){ localStorage.setItem("subjects", JSON.stringify(data)); }
+
+function loadInputs(){
+  const subjects = getSubjects();
+  const container = document.getElementById("inputs");
+
+  if(subjects.length === 0){
+    container.innerHTML = "<p>No subjects available</p>";
+    return;
+  }
+
+  let html = "";
+  subjects.forEach((s, i) => {
+    html += `
+      <div class="row">
+        <label>${s.subject} (Target: ${s.hours} hrs)</label>
+        <input type='number' id='inp${i}' placeholder="Hours studied today">
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+function saveProgress(){
+  let subjects = getSubjects();
+  let total = 0;
+  let done = 0;
+
+  subjects.forEach((s, i) => {
+    const val = Number(document.getElementById(`inp${i}`).value);
+    done += val;
+    total += s.hours;
+    s.progress = (val / s.hours) * 100;
+  });
+
+  setSubjects(subjects);
+
+  let history = JSON.parse(localStorage.getItem("history")) || [];
+  history.push(Math.round((done/total)*100));
+  localStorage.setItem("history", JSON.stringify(history));
+
+  alert(`Nice! You completed ${Math.round((done/total)*100)}% today`);
+}
+
+loadInputs();
+</script>
+</body>
+</html>

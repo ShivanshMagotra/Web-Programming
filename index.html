@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Planner</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="progress.html">Progress</a>
+  <a href="dashboard.html">Dashboard</a>
+</nav>
+
+<h1>Semester Planning</h1>
+
+<div class="container">
+  <h2>Add Subject</h2>
+  <div class="form-group">
+  <label for="subject">Subject Name</label>
+  <input id="subject" type="text" placeholder="Enter subject name">
+
+  <label for="examDate">Exam Date</label>
+  <input id="examDate" type="date">
+
+  <label for="hours">Daily Study Hours</label>
+  <input id="hours" type="number" placeholder="e.g. 2">
+
+  <button onclick="addSubject()">Add Subject</button>
+  </div>
+
+  <h2>Your Plan</h2>
+  <table id="table"></table>
+</div>
+
+<script>
+function getSubjects(){ return JSON.parse(localStorage.getItem("subjects")) || []; }
+function setSubjects(data){ localStorage.setItem("subjects", JSON.stringify(data)); }
+
+function addSubject(){
+  let subjects = getSubjects();
+  const subject = document.getElementById("subject").value;
+  const examDate = document.getElementById("examDate").value;
+  const hours = Number(document.getElementById("hours").value);
+
+  if(subject === "" || examDate === "" || hours <= 0){
+    alert("Please fill all fields correctly");
+    return;
+  }
+
+  subjects.push({subject, examDate, hours, progress: 0});
+  setSubjects(subjects);
+
+  document.getElementById("subject").value = "";
+  document.getElementById("examDate").value = "";
+  document.getElementById("hours").value = "";
+
+  render();
+}
+
+function deleteSubject(i){
+  let subjects = getSubjects();
+  subjects.splice(i,1);
+  setSubjects(subjects);
+  render();
+}
+
+function render(){
+  const table = document.getElementById("table");
+  const subjects = getSubjects();
+
+  if(subjects.length === 0){
+    table.innerHTML = "<tr><td>No subjects added</td></tr>";
+    return;
+  }
+
+  let html = "<tr><th>Subject</th><th>Exam</th><th>Days Left</th><th>Hours</th><th>Action</th></tr>";
+
+  subjects.forEach((s, index) => {
+  const today = new Date();
+  const exam = new Date(s.examDate);
+  const diff = Math.ceil((exam - today)/(1000*60*60*24));
+
+  html += `<tr class="row-item">
+    <td>${s.subject}</td>
+    <td>${s.examDate}</td>
+    <td>${diff}</td>
+    <td>${s.hours}</td>
+    <td><button onclick="deleteSubject(${index})">Delete</button></td>
+  </tr>`;
+});
+  table.innerHTML = html;
+
+const rows = document.querySelectorAll(".row-item");
+rows.forEach(row => {
+  row.addEventListener("mouseover", () => {
+    row.style.background = "rgba(255,255,255,0.2)";
+    row.style.transform = "scale(1.02)";
+    row.style.transition = "0.2s";
+  });
+
+  row.addEventListener("mouseout", () => {
+    row.style.background = "";
+    row.style.transform = "scale(1)";
+  });
+});
+applyButtonHover();
+}
+
+render();
+function applyButtonHover() {
+  const buttons = document.querySelectorAll("button");
+
+  buttons.forEach(btn => {
+    btn.addEventListener("mouseover", () => {
+      btn.style.background = "linear-gradient(45deg, #56ccf2, #2f80ed, #1e4ed8)";
+      btn.style.transform = "scale(1.05)";
+      btn.style.transition = "0.3s";
+      btn.style.boxShadow = "0 6px 20px rgba(0,0,0,0.4)";
+    });
+
+    btn.addEventListener("mouseout", () => {
+      btn.style.background = "linear-gradient(45deg, #1e4ed8, #2f80ed, #56ccf2)";
+      btn.style.transform = "scale(1)";
+      btn.style.boxShadow = "none";
+    });
+  });
+}
+</script>
+</body>
+</html>
+
+
+
+

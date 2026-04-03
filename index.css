@@ -1,0 +1,106 @@
+body {
+  font-family: Arial;
+  margin:0;
+  background: linear-gradient(135deg, #0f172a, #1e293b, #312e81);
+}
+
+nav {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  padding:12px;
+  text-align:center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+nav a {
+  color:white;
+  margin:0 15px;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+h1, h2 {
+  text-align:center;
+  color:white;
+}
+
+.container {
+  width:70%;
+  margin:30px auto;
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(15px);
+  padding:20px;
+  border-radius:15px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.2);
+}
+
+input {
+  padding:10px;
+  margin:5px;
+  width:30%;
+  border-radius:8px;
+  border:none;
+  outline:none;
+}
+
+button {
+  padding:10px;
+  margin:5px;
+  border:none;
+  border-radius:8px;
+  color:white;
+  cursor:pointer;
+  background: linear-gradient(45deg, #ff6a00, #ee0979);
+  transition: 0.4s;
+}
+
+
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+th, td {
+  padding:10px;
+  text-align:center;
+}
+
+th {
+  background: linear-gradient(45deg, #36d1dc, #5b86e5);
+  color:white;
+}
+
+tr:nth-child(even){ background:#f2f2f2; }
+
+.form-group {
+  width: 50%;
+  margin: auto;
+}
+
+label {
+  display:block;
+  margin-top:12px;
+  margin-bottom:5px;
+  font-weight:bold;
+  color:#e2e8f0;
+}
+
+.form-group input {
+  width: 100%;
+  display:block;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  outline:none;
+  margin-bottom:5px;
+}
+
+.form-group button {
+  width: 100%;
+  margin-top:15px;
+}

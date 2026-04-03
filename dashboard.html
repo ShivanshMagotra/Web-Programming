@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="progress.html">Progress</a>
+  <a href="dashboard.html">Dashboard</a>
+</nav>
+
+<h1>Progress Dashboard</h1>
+
+<div class="container">
+  <h2>Overall Progress</h2>
+  <progress id="overall" value="0" max="100"></progress>
+  <span id="overallText"></span>
+
+  <hr>
+
+  <div id="subjects"></div>
+</div>
+
+<script>
+function getSubjects(){ return JSON.parse(localStorage.getItem("subjects")) || []; }
+
+function load(){
+  const subjects = getSubjects();
+  const container = document.getElementById("subjects");
+
+  let html = "";
+  let totalHours = 0;
+  let completedHours = 0;
+
+  subjects.forEach(s => {
+    html += `
+      <p>${s.subject} (${Math.round(s.progress)}%)</p>
+      <progress value='${s.progress}' max='100'></progress>
+    `;
+
+    totalHours += s.hours;
+    completedHours += (s.progress/100) * s.hours;
+  });
+
+  container.innerHTML = html;
+
+  const overall = totalHours ? (completedHours / totalHours) * 100 : 0;
+
+  document.getElementById("overall").value = overall;
+  document.getElementById("overallText").innerText = Math.round(overall) + "%";
+}
+
+load();
+</script>
+</body>
+</html>
